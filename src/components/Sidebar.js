@@ -24,7 +24,8 @@ import {
   DateRange as CalendarViewIcon,
   Book as DiaryIcon,
   History as HistoryIcon,
-  Savings as SavingsIcon // Make sure this import is included
+  Savings as SavingsIcon,
+  AccountBalance as LoanIcon // Add LoanIcon import
 } from '@mui/icons-material';
 
 const Sidebar = ({ open, drawerWidth }) => {
@@ -75,6 +76,13 @@ const Sidebar = ({ open, drawerWidth }) => {
       icon: <SavingsIcon />,
       path: '/app/savings',
       active: location.pathname.includes('/app/savings')
+    },
+    // Add Loan Simulation
+    {
+      text: 'Loan Simulation',
+      icon: <LoanIcon />,
+      path: '/app/loans',
+      active: location.pathname.includes('/app/loans')
     },
     {
       text: 'Spending Goals',

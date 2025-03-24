@@ -28,7 +28,8 @@ import {
   Savings as SavingsIcon,
   Book as DiaryIcon,
   History as HistoryIcon,
-  DateRange as CalendarViewIcon
+  DateRange as CalendarViewIcon,
+  AccountBalance as LoanIcon
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
@@ -189,10 +190,11 @@ const AppLayout = () => {
     if (path.startsWith("/app/accounts")) return 4;
     if (path.startsWith("/app/transfers")) return 5;
     if (path.startsWith("/app/savings")) return 6;
-    if (path.startsWith("/app/spending-goals")) return 7;
-    if (path.startsWith("/app/templates")) return 8;
-    if (path.startsWith("/app/diary")) return 9;
-    if (path.startsWith("/app/journal-history")) return 10;
+    if (path.startsWith("/app/loans")) return 7;
+    if (path.startsWith("/app/spending-goals")) return 8;
+    if (path.startsWith("/app/templates")) return 9;
+    if (path.startsWith("/app/diary")) return 10;
+    if (path.startsWith("/app/journal-history")) return 11;
     return 0;
   };
 
@@ -459,11 +461,33 @@ const AppLayout = () => {
             {open && <ListItemText primary={t('nav.savings')} />}
           </ListItemButton>
           
+          {/* Loans - New Item */}
+          <ListItemButton
+            component={Link}
+            to="/app/loans"
+            selected={getSelectedIndex() === 7}
+            onClick={handleNavigation}
+            sx={{ 
+              minHeight: 48,
+              px: 2.5,
+              justifyContent: open ? 'initial' : 'center',
+            }}
+          >
+            <ListItemIcon sx={{ 
+              minWidth: 0, 
+              mr: open ? 3 : 'auto', 
+              justifyContent: 'center' 
+            }}>
+              <LoanIcon />
+            </ListItemIcon>
+            {open && <ListItemText primary="Loan Simulation" />}
+          </ListItemButton>
+          
           {/* Spending Goals */}
           <ListItemButton
             component={Link}
             to="/app/spending-goals"
-            selected={getSelectedIndex() === 7}
+            selected={getSelectedIndex() === 8}
             onClick={handleNavigation}
             sx={{ 
               minHeight: 48,
@@ -485,7 +509,7 @@ const AppLayout = () => {
           <ListItemButton
             component={Link}
             to="/app/templates"
-            selected={getSelectedIndex() === 8}
+            selected={getSelectedIndex() === 9}
             onClick={handleNavigation}
             sx={{ 
               minHeight: 48,
@@ -507,7 +531,7 @@ const AppLayout = () => {
           <ListItemButton
             component={Link}
             to="/app/diary"
-            selected={getSelectedIndex() === 9}
+            selected={getSelectedIndex() === 10}
             onClick={handleNavigation}
             sx={{ 
               minHeight: 48,
@@ -529,7 +553,7 @@ const AppLayout = () => {
           <ListItemButton
             component={Link}
             to="/app/journal-history"
-            selected={getSelectedIndex() === 10}
+            selected={getSelectedIndex() === 11}
             onClick={handleNavigation}
             sx={{ 
               minHeight: 48,

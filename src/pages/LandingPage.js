@@ -1,58 +1,103 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Box, CssBaseline, useMediaQuery } from '@mui/material';
+import React, { useState, useEffect, useContext, lazy, Suspense } from 'react';
+import { Box, CssBaseline, useMediaQuery, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { AppContext } from '../App';
-import HeroSection from '../components/landing/HeroSection';
-import FeaturesSection from '../components/landing/FeaturesSection';
-import ScreenshotsSection from '../components/landing/ScreenshotsSection';
-import TeamSection from '../components/landing/TeamSection';
-import LandingFooter from '../components/landing/LandingFooter';
 import LandingHeader from '../components/landing/LandingHeader';
+import LandingFooter from '../components/landing/LandingFooter';
+
+// Lazy-load sections to improve initial page load performance
+const HeroSection = lazy(() => import('../components/landing/HeroSection'));
+const FeaturesSection = lazy(() => import('../components/landing/FeaturesSection'));
+const FunctionalityShowcaseSection = lazy(() => import('../components/landing/FunctionalityShowcaseSection'));
+const ScreenshotsSection = lazy(() => import('../components/landing/ScreenshotsSection'));
+const TestimonialsSection = lazy(() => import('../components/landing/TestimonialsSection'));
+const ProductRoadmapSection = lazy(() => import('../components/landing/ProductRoadmapSection'));
+const TeamSection = lazy(() => import('../components/landing/TeamSection'));
+const CallToActionSection = lazy(() => import('../components/landing/CallToActionSection'));
+
+// Loading fallback component
+const SectionLoader = () => (
+  <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+    <CircularProgress />
+  </Box>
+);
 
 const LandingPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-  const { darkMode, toggleDarkMode } = useContext(AppContext);
+  const { darkMode, toggleDarkMode, language } = useContext(AppContext);
   
-  // Handle scroll animations
+  // Throttled scroll position tracker
   const [scrollPosition, setScrollPosition] = useState(0);
   
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      setScrollPosition(window.scrollY);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollPosition(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Common props for all sections
+  const sectionProps = {
+    isMobile,
+    isTablet,
+    scrollPosition,
+    language,
+    darkMode
+  };
 
   return (
     <Box sx={{
       bgcolor: 'background.default',
       color: 'text.primary',
       minHeight: '100vh',
-      overflow: 'hidden'
+      width: '100%',
+      overflowX: 'hidden'
     }}>
       <CssBaseline />
       
-      {/* Header with navigation and dark mode toggle */}
-      <LandingHeader darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      {/* Header with navigation */}
+      <LandingHeader darkMode={darkMode} toggleDarkMode={toggleDarkMode} language={language} />
       
-      {/* Hero Section */}
-      <HeroSection isMobile={isMobile} scrollPosition={scrollPosition} />
-      
-      {/* Features Section */}
-      <FeaturesSection isMobile={isMobile} isTablet={isTablet} scrollPosition={scrollPosition} />
-      
-      {/* Screenshots Section */}
-      <ScreenshotsSection isMobile={isMobile} scrollPosition={scrollPosition} />
-      
-      {/* Team Section */}
-      <TeamSection isMobile={isMobile} scrollPosition={scrollPosition} />
+      <Suspense fallback={<SectionLoader />}>
+        {/* Hero Section */}
+        <HeroSection {...sectionProps} />
+        
+        {/* Features Section */}
+        <FeaturesSection {...sectionProps} />
+        
+        {/* Functionality Showcase Section */}
+        <FunctionalityShowcaseSection {...sectionProps} />
+        
+        {/* Screenshots Section */}
+        <ScreenshotsSection {...sectionProps} />
+        
+        {/* Testimonials Section */}
+        <TestimonialsSection {...sectionProps} />
+        
+        {/* Product Roadmap Section */}
+        {/* <ProductRoadmapSection {...sectionProps} /> */}
+        
+        {/* Team Section */}
+        <TeamSection {...sectionProps} />
+        
+        {/* Call to Action Section */}
+        <CallToActionSection {...sectionProps} />
+      </Suspense>
       
       {/* Footer */}
-      <LandingFooter />
+      <LandingFooter language={language} />
     </Box>
   );
 };

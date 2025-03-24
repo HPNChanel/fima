@@ -6,84 +6,104 @@ import {
   Grid,
   Card,
   CardContent,
+  useTheme,
   alpha,
-  useTheme
+  Icon,
+  useMediaQuery
 } from '@mui/material';
 import {
-  Assessment as ReportIcon,
-  History as HistoryIcon,
-  Flag as GoalIcon,
-  CreditCard as CardIcon,
-  ShowChart as ChartIcon,
-  AccountBalance as AccountIcon
+  Dashboard as DashboardIcon,
+  TrendingUp as TrendingUpIcon,
+  Savings as SavingsIcon,
+  SwapHoriz as SwapHorizIcon,
+  Notifications as NotificationsIcon,
+  Security as SecurityIcon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
-// Animation wrapper
 const MotionBox = motion(Box);
 const MotionCard = motion(Card);
 
-const FeaturesSection = ({ isTablet, isMobile, scrollPosition }) => {
+const FeaturesSection = ({ isMobile, isTablet, language }) => {
   const theme = useTheme();
+  const isLg = useMediaQuery(theme.breakpoints.up('lg'));
   
   // Features data
   const features = [
     {
-      icon: <ReportIcon fontSize="large" />,
-      title: 'Smart Reports',
-      description: 'Generate comprehensive financial reports with just a few clicks. Analyze your spending patterns and make informed decisions.'
+      icon: <DashboardIcon fontSize="large" />,
+      title: language === 'vi' ? 'Bảng Điều Khiển Trực Quan' : 'Intuitive Dashboard',
+      description: language === 'vi' 
+        ? 'Theo dõi tài chính của bạn trong thời gian thực với biểu đồ và số liệu dễ đọc.'
+        : 'Track your finances in real-time with easy-to-read charts and metrics.'
     },
     {
-      icon: <HistoryIcon fontSize="large" />,
-      title: 'Transaction History',
-      description: 'Keep track of all your transactions in one place. Filter, search, and categorize for better financial organization.'
+      icon: <TrendingUpIcon fontSize="large" />,
+      title: language === 'vi' ? 'Báo Cáo & Phân Tích' : 'Reports & Analytics',
+      description: language === 'vi'
+        ? 'Hiểu rõ thói quen chi tiêu của bạn với báo cáo chi tiết và dự báo.'
+        : 'Understand your spending habits with detailed reports and forecasts.'
     },
     {
-      icon: <GoalIcon fontSize="large" />,
-      title: 'Spending Goals',
-      description: 'Set and track your financial goals. Stay motivated and measure your progress towards financial freedom.'
+      icon: <SavingsIcon fontSize="large" />,
+      title: language === 'vi' ? 'Mục Tiêu Tiết Kiệm' : 'Savings Goals',
+      description: language === 'vi'
+        ? 'Đặt, theo dõi và đạt được mục tiêu tài chính của bạn với các công cụ trực quan.'
+        : 'Set, track, and reach your financial goals with visual tools.'
     },
     {
-      icon: <CardIcon fontSize="large" />,
-      title: 'Account Management',
-      description: 'Manage multiple accounts, track balances, and transfer funds effortlessly between accounts.'
+      icon: <SwapHorizIcon fontSize="large" />,
+      title: language === 'vi' ? 'Chuyển Khoản Dễ Dàng' : 'Easy Transfers',
+      description: language === 'vi'
+        ? 'Chuyển tiền giữa tài khoản một cách nhanh chóng và an toàn.'
+        : 'Move money between accounts quickly and securely.'
     },
     {
-      icon: <ChartIcon fontSize="large" />,
-      title: 'Visual Analytics',
-      description: 'Visualize your financial data with beautiful charts and graphs. Identify trends and optimize your finances.'
+      icon: <NotificationsIcon fontSize="large" />,
+      title: language === 'vi' ? 'Thông Báo Thông Minh' : 'Smart Notifications',
+      description: language === 'vi'
+        ? 'Nhận thông báo về giao dịch, chi tiêu vượt quá giới hạn và các mục tiêu đã đạt được.'
+        : 'Get alerted about transactions, budget overruns, and goals reached.'
     },
     {
-      icon: <AccountIcon fontSize="large" />,
-      title: 'Savings Tracker',
-      description: 'Monitor your savings accounts and watch your money grow with interest calculations and projections.'
+      icon: <SecurityIcon fontSize="large" />,
+      title: language === 'vi' ? 'Bảo Mật Hàng Đầu' : 'Top-Tier Security',
+      description: language === 'vi'
+        ? 'Dữ liệu tài chính của bạn được mã hóa và bảo vệ bằng các biện pháp bảo mật tiên tiến.'
+        : 'Your financial data is encrypted and protected with advanced security measures.'
     }
   ];
   
-  // Animation variants
+  // Fixed animation variants with standard easing
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
+      transition: { 
+        staggerChildren: 0.1,
+        ease: "easeOut"
+      }
     }
   };
   
-  const cardVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: { 
-      y: 0, 
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
       opacity: 1,
-      transition: { duration: 0.6 }
+      transition: { duration: 0.5, ease: "easeOut" }
     }
   };
 
   return (
     <Box
+      component="section"
       id="features"
       sx={{
         py: { xs: 8, md: 12 },
-        backgroundColor: alpha(theme.palette.background.default, 0.8)
+        backgroundColor: theme.palette.mode === 'dark' 
+          ? alpha(theme.palette.background.paper, 0.3)
+          : alpha(theme.palette.background.paper, 0.5)
       }}
     >
       <Container maxWidth="lg">
@@ -95,7 +115,7 @@ const FeaturesSection = ({ isTablet, isMobile, scrollPosition }) => {
             fontWeight="medium"
             sx={{ mb: 2 }}
           >
-            Powerful Features
+            {language === 'vi' ? 'Tính Năng Chính' : 'Key Features'}
           </Typography>
           
           <Typography
@@ -106,7 +126,7 @@ const FeaturesSection = ({ isTablet, isMobile, scrollPosition }) => {
               mb: 2 
             }}
           >
-            Everything You Need to Manage Your Finances
+            {language === 'vi' ? 'Mọi Thứ Bạn Cần để Quản Lý Tài Chính' : 'Everything You Need to Manage Finances'}
           </Typography>
           
           <Typography
@@ -118,7 +138,9 @@ const FeaturesSection = ({ isTablet, isMobile, scrollPosition }) => {
               mx: 'auto'
             }}
           >
-            Our comprehensive tools help you track, analyze, and optimize your financial life in one place.
+            {language === 'vi' 
+              ? 'Công cụ tài chính mạnh mẽ được thiết kế để đơn giản hóa cuộc sống tài chính của bạn'
+              : 'Powerful financial tools designed to simplify your financial life'}
           </Typography>
         </Box>
         
@@ -126,41 +148,49 @@ const FeaturesSection = ({ isTablet, isMobile, scrollPosition }) => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <Grid container spacing={4}>
             {features.map((feature, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <MotionCard
-                  variants={cardVariants}
-                  sx={{
+                  variants={itemVariants}
+                  whileHover={{ 
+                    y: -8,
+                    boxShadow: theme.shadows[8]
+                  }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 300, 
+                    damping: 15 
+                  }}
+                  sx={{ 
                     height: '100%',
                     borderRadius: 4,
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0 12px 20px rgba(0,0,0,0.1)'
-                    }
+                    p: { xs: 1, sm: 2 },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: theme.shadows[isLg ? 4 : 2]
                   }}
                 >
-                  <CardContent sx={{ p: 4 }}>
+                  <CardContent sx={{ p: 3, flexGrow: 1 }}>
                     <Box
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        mb: 2,
                         width: 60,
                         height: 60,
-                        borderRadius: '12px',
-                        backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                        color: theme.palette.primary.main
+                        borderRadius: 2,
+                        mb: 2,
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: 'primary.main'
                       }}
                     >
                       {feature.icon}
                     </Box>
                     
-                    <Typography variant="h5" component="h3" sx={{ mb: 1, fontWeight: 'bold' }}>
+                    <Typography variant="h5" component="h3" fontWeight="bold" gutterBottom>
                       {feature.title}
                     </Typography>
                     

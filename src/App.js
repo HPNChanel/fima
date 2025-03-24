@@ -31,10 +31,12 @@ import JournalEntryForm from "./pages/JournalEntryForm";
 import SavingsPage from './pages/SavingsPage';
 import CreateSavingsPage from './pages/CreateSavingsPage';
 import SavingsDetailPage from './pages/SavingsDetailPage';
+import LoansPage from './pages/LoansPage';
+import CreateLoanPage from './pages/CreateLoanPage';
+import LoanDetailPage from './pages/LoanDetailPage';
 import LandingPage from './pages/LandingPage';
 import ForgotPassword from './pages/ForgotPassword';
 import SettingsPage from './pages/SettingsPage';
-import ChatAssistant from './components/ChatAssistant';
 
 export const AppContext = React.createContext();
 
@@ -144,6 +146,11 @@ const App = () => {
               <Route path="savings" element={<SavingsPage />} />
               <Route path="savings/new" element={<CreateSavingsPage />} />
               <Route path="savings/:id" element={<SavingsDetailPage />} />
+              
+              {/* Add routes for Loan Simulation */}
+              <Route path="loans" element={<LoansPage />} />
+              <Route path="loans/new" element={<CreateLoanPage />} />
+              <Route path="loans/:id" element={<LoanDetailPage />} />
             </Route>
             
             <Route path="/dashboard" element={<Navigate to="/app" replace />} />
@@ -153,8 +160,7 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
 
-          {/* Render the ChatAssistant when user is logged in */}
-          {currentUser && <ChatAssistant />}
+          
         </LocalizationProvider>
       </ThemeProvider>
     </AppContext.Provider>
